@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduRank Osun Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: white; text-align: center; padding: 10px; margin: 0; }
+        .card { background: #1e293b; padding: 15px; border-radius: 12px; margin-top: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+        button { background: #334155; color: white; border: 1px solid #475569; padding: 12px 5px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; }
+        button:active { background: #38bdf8; }
+        h2 { color: #38bdf8; margin: 5px 0; font-size: 1.4rem; }
+        p { font-size: 0.8rem; color: #94a3b8; margin-bottom: 15px; }
+        canvas { max-height: 350px !important; }
+    </style>
+</head>
+<body>
+    <h2>EduRank Osun</h2>
+    <p>Official Performance Analytics</p>
+    
+    <div class="card">
+        <canvas id="eduChart"></canvas>
+        
+        <div class="controls">
+            <button onclick="updateData('term1')">Term 1<br>(Past)</button>
+            <button onclick="updateData('term2')">Term 2<br>(Current)</button>
+            <button onclick="updateData('term3')">Term 3<br>(Predicted)</button>
+        </div>
+    </div>
+
+    <script>
+        const schoolData = {
+            term1: [65, 58, 55, 72, 60],
+            term2: [82, 74, 68, 89, 71],
+            term3: [88, 79, 75, 94, 80]
+        };
+
+        const ctx = document.getElementById('eduChart').getContext('2d');
+        let myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Osogbo', 'Ife', 'Ede', 'Ilesa', 'Ikirun'],
+                datasets: [{
+                    label: 'Score %',
+                    data: schoolData.term2,
+                    backgroundColor: ['#38bdf8', '#818cf8', '#fbbf24', '#34d399', '#f87171'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        function updateData(term) {
+            myChart.data.datasets[0].data = schoolData[term];
+            myChart.update();
+        }
+    </script>
+</body>
+</html>
